@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+
+requests
+pydantic
+
+sentence-transformers
+fastembed
+qdrant-client
+
+typing-extensions
