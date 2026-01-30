@@ -10,26 +10,36 @@ from qdrant_client.http import models as qm
 import json
 from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
+import os
 
 # ============================================================
 # ======================== CONFIG =============================
 # ============================================================
 
-QDRANT_URL = "http://localhost:6333/"
-QDRANT_API_KEY = "t_7bXFhhVmgcCDg-2"
-EMBED_MODEL = "intfloat/multilingual-e5-large"
+QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
+QDRANT_API_KEY = os.getenv("QDRANT_API_KEY", "")
 
-# Local LLM (OpenAI-compatible) – same as ingest pipeline
-LLM_URL = "http://localhost:2146/v1/chat/completions"
-LLM_API_KEY = ""
-LLM_MODEL = "openai/gpt-oss-120b"
-# ------------ LLM retry config -
+EMBED_MODEL = os.getenv(
+    "EMBED_MODEL",
+    "intfloat/multilingual-e5-large"
+)
+
+LLM_URL = os.getenv(
+    "LLM_URL",
+    "http://localhost:2146/v1/chat/completions"
+)
+LLM_API_KEY = os.getenv("LLM_API_KEY", "")
+LLM_MODEL = os.getenv(
+    "LLM_MODEL",
+    "openai/gpt-oss-120b"
+)
 
 # Retrieval settings
-DENSE_LIMIT = 200
-SPARSE_LIMIT = 400
-FINAL_TOP_K = 150         # final fused points for context
-MAX_CONTEXT_CHARS = 500_000  # max chars passed to LLM
+DENSE_LIMIT = int(os.getenv("DENSE_LIMIT", 200))
+SPARSE_LIMIT = int(os.getenv("SPARSE_LIMIT", 400))
+FINAL_TOP_K = int(os.getenv("FINAL_TOP_K", 150))
+MAX_CONTEXT_CHARS = int(os.getenv("MAX_CONTEXT_CHARS", 500_000))
+
 
 
 # ============================================================
